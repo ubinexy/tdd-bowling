@@ -2,18 +2,17 @@ import java.util.stream.Stream;
 
 public class BowlingGame {
     private Integer[] score;
-    private int firstThrow;
-    private int secondThrow;
-    private int finishedFrame;
+    private int firstThrow = -1;
+    private int secondThrow = 0;
+    private int frameIndex;
+    private boolean islastThrowSpare = false;
 
     public BowlingGame() {
         score = new Integer[10];
         for(int i = 0; i < 10; i++) {
             score[i] = 0;
         }
-        firstThrow = -1;
-        secondThrow = -1;
-        finishedFrame = 0;
+        frameIndex = 0;
     }
 
     public int getScore() {
@@ -21,18 +20,36 @@ public class BowlingGame {
     }
 
     public void throwBowling(int knockedPins) {
-        if(firstThrow < 0) {
+        if(islastThrowSpare) {
+            score[frameIndex -1] += knockedPins;
+        }
+
+        if(isFirstThrow()) {
             firstThrow = knockedPins;
+            if(knockedPins == 10) {
+                frameOver();
+            }
         } else {
             secondThrow = knockedPins;
-            check();
+            frameOver();
+        }
+
+        if(frameIndex > 0 && score[frameIndex -1] == 10) {
+            islastThrowSpare = true;
+        } else {
+            islastThrowSpare = false;
         }
     }
 
-    public void check() {
-        score[0] = firstThrow + secondThrow;
+    private boolean isFirstThrow() {
+        return firstThrow < 0;
+    }
+
+    private void frameOver() {
+        score[frameIndex] = firstThrow + secondThrow;
 
         firstThrow = -1;
-        secondThrow = -1;
+        secondThrow = 0;
+        frameIndex++;
     }
 }
