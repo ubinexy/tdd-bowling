@@ -6,6 +6,7 @@ public class BowlingGame {
     private int secondThrow = 0;
     private int frameIndex;
     private boolean islastThrowSpare = false;
+    private boolean islastThrowStrike = false;
 
     public BowlingGame() {
         score = new Integer[10];
@@ -20,21 +21,44 @@ public class BowlingGame {
     }
 
     public void throwBowling(int knockedPins) {
-        if(islastThrowSpare) {
+        if(islastThrowStrike || islastThrowSpare)
             score[frameIndex -1] += knockedPins;
+
+        if(frameIndex == 9) {
+            LastFrame(knockedPins);
+            return;
         }
 
         if(isFirstThrow()) {
             firstThrow = knockedPins;
             if(knockedPins == 10) {
-                frameOver();
+                updateFrameState();
             }
         } else {
             secondThrow = knockedPins;
-            frameOver();
+            updateFrameState();
         }
+        updateLastThrowState(knockedPins);
+    }
 
-        if(frameIndex > 0 && score[frameIndex -1] == 10) {
+    public void LastFrame(int knockedPins) {
+        score[frameIndex] += knockedPins;
+
+        if(islastThrowStrike) {
+            islastThrowStrike = false;
+            islastThrowSpare = true;
+        } else if(islastThrowSpare) {
+            islastThrowSpare = false;
+        }
+    }
+
+    private void updateLastThrowState(int knockedPins) {
+        if(knockedPins == 10) {
+            islastThrowStrike = true;
+        } else if(islastThrowStrike) {
+            islastThrowStrike = false;
+            islastThrowSpare = true;
+        } else if(frameIndex > 0 && score[frameIndex -1] == 10) {
             islastThrowSpare = true;
         } else {
             islastThrowSpare = false;
@@ -45,7 +69,7 @@ public class BowlingGame {
         return firstThrow < 0;
     }
 
-    private void frameOver() {
+    private void updateFrameState() {
         score[frameIndex] = firstThrow + secondThrow;
 
         firstThrow = -1;
