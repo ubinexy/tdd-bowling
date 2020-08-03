@@ -7,6 +7,8 @@ public class BowlingGame {
     private int frameIndex;
     private boolean islastThrowSpare = false;
     private boolean islastThrowStrike = false;
+    private int rest = 10;
+    private int count = 0;
 
     public BowlingGame() {
         score = new Integer[10];
@@ -20,12 +22,14 @@ public class BowlingGame {
         return Stream.of(score).reduce(0, Integer::sum);
     }
 
-    public void throwBowling(int knockedPins) {
+    public void throwBowling(int knockedPins) throws MyException {
+        if(knockedPins > 10 || knockedPins < 0)
+            throw new MyException("Out of range");
         if(islastThrowStrike || islastThrowSpare)
             score[frameIndex -1] += knockedPins;
 
         if(frameIndex == 9) {
-            LastFrame(knockedPins);
+            lastFrame(knockedPins);
             return;
         }
 
@@ -36,13 +40,22 @@ public class BowlingGame {
             }
         } else {
             secondThrow = knockedPins;
+            if(firstThrow + secondThrow > 10) throw new MyException("Out of range");
             updateFrameState();
         }
         updateLastThrowState(knockedPins);
     }
 
-    public void LastFrame(int knockedPins) {
+    private void lastFrame(int knockedPins) throws MyException {
         score[frameIndex] += knockedPins;
+
+        if(count++ == 3) throw new MyException("game was over");
+        rest -= knockedPins;
+        if(rest == 0) {
+            rest = 10;
+        } else if(rest < 0){
+            throw new MyException("out of range");
+        }
 
         if(islastThrowStrike) {
             islastThrowStrike = false;

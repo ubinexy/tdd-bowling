@@ -5,7 +5,7 @@ public class BowlingGameTest {
 
 
     @Test
-    void should_return_sum_when_get_score_given_knocked_pins_in_two_throws_are_less_then_10() {
+    void should_return_sum_when_get_score_given_knocked_pins_in_two_throws_are_less_then_10() throws MyException {
         BowlingGame game = new BowlingGame();
 
         game.throwBowling(2);
@@ -16,7 +16,7 @@ public class BowlingGameTest {
 
 
     @Test
-    void should_account_for_next_two_throws_when_get_score_given_a_strike() {
+    void should_account_for_next_two_throws_when_get_score_given_a_strike() throws MyException {
         BowlingGame game = new BowlingGame();
 
         game.throwBowling(10);
@@ -26,7 +26,7 @@ public class BowlingGameTest {
     }
 
     @Test
-    void should_account_for_next_throw_when_get_score_given_a_spare() {
+    void should_account_for_next_throw_when_get_score_given_a_spare() throws MyException {
         BowlingGame game = new BowlingGame();
 
         game.throwBowling(2);
@@ -37,7 +37,7 @@ public class BowlingGameTest {
     }
 
     @Test
-    void should_return_sum_when_get_score_given_three_throws_in_last_frame() {
+    void should_return_sum_when_get_score_given_three_throws_in_last_frame() throws MyException {
         BowlingGame game = new BowlingGame();
 
         for(int i = 0; i < 18; i++) {
@@ -51,7 +51,7 @@ public class BowlingGameTest {
     }
 
     @Test
-    void should_return_sum_when_get_score_given_a_strike_in_last_frame() {
+    void should_return_sum_when_get_score_given_a_strike_in_last_frame() throws MyException {
         BowlingGame game = new BowlingGame();
 
         for(int i = 0; i < 18; i++) {
@@ -65,7 +65,7 @@ public class BowlingGameTest {
     }
 
     @Test
-    void should_return_sum_when_get_score_given_a_spare_in_last_frame() {
+    void should_return_sum_when_get_score_given_a_spare_in_last_frame() throws MyException {
         BowlingGame game = new BowlingGame();
 
         for(int i = 0; i < 18; i++) {
@@ -96,8 +96,9 @@ public class BowlingGameTest {
         });
     }
 
+
     @Test
-    void should_throw_exception_when_throwBowling_given_sum_of_the_two_throws_are_greater_than_10(){
+    void should_throw_exception_when_throwBowling_given_sum_of_the_two_throws_are_greater_than_10() throws MyException {
         BowlingGame game = new BowlingGame();
         game.throwBowling(7);
 
@@ -107,7 +108,7 @@ public class BowlingGameTest {
     }
 
     @Test
-    void should_throw_exception_when_throwBowling_given_call_throwBowling_method_after_game_is_over(){
+    void should_throw_exception_when_throwBowling_given_call_throwBowling_method_after_game_is_over() throws MyException {
         BowlingGame game = new BowlingGame();
 
         for(int i = 0; i < 21; i++) {
